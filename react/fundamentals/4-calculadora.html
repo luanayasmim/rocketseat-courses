@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Rubik&display=swap" rel="stylesheet" />
+    <title>Rockeatseat - React.js - Fundamentos</title>
+    <style type="text/tailwindcss">
+        @theme{
+            --text: #ebebeb;
+            --text-secondary: #6b6b6b;
+            --primary: #462878;
+            --background: #2d2a37;
+
+            --gradient: 180deg,
+                rgba(0, 0, 0, 0.05) 0%,
+                rgba(255, 255, 255, 0.05) 100%;
+
+            --gradient-hover: 180deg,
+                rgba(0, 0, 0, 0.1) 0%,
+                rgba(255, 255, 255, 0.1) 100%;
+            
+            --shadow: 0px 11px 7px 0px rgba(0, 9, 9, 0.01), 
+            0px 7px 7px 0px rgba(0, 0, 0, 0.04), 
+            0px 4px 6px 0px rgba(0, 0, 0, 0.10), 
+            0px 2px 4px 0px rgba(0, 0, 0, 0.26), 
+            0px 0px 2px 0px rgba(0, 0, 0, 0.29),
+            0px 2px 3px 0px rgba(255, 255, 255, 0.06) inset;
+
+            --font-sans: 'Rubik', sans-serif;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-linear-[180deg,_#807ece_0%,_#8e7ece_100%] text-(--text) font-(--font-sans)">
+    <div id="root"></div>
+
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <script type="text/babel">
+        const textVariants = {
+            default: 'text-xl',
+            muted: 'text-xl text-(--text-secondary)',
+            heading: 'text-2xl',
+            blast: 'text-3xl'
+        }
+
+        function Text({ as = 'span', variant = 'default', className = '', children, ...props }) {
+            return React.createElement(
+                as,
+                {
+                    className: `${textVariants[variant]} ${className}`,
+                    ...props
+                },
+                children
+            )
+        }
+
+        const buttonVariants = {
+            default: 'bg-(--background)',
+            primary: 'bg-(--primary)',
+        }
+
+        function Button({ variant = 'default', className = '', children, ...props }) {
+            return (
+                <Text 
+                    as="button" 
+                    variant="heading" 
+                    className={`
+                        flex items-center justify-center rounded-xl
+                        p-3 cursor-pointer text-(--text) bg-linear-(--gradient)
+                        hover:bg-linear-(--gradient-hover)
+                        shadow-(--shadow)
+                        ${buttonVariants[variant]}
+                        ${className}
+                    `}
+                    {...props}
+                >
+                    {children}
+                </Text>
+            );
+        }
+
+        function Card({ children, className = '', ...props}) {
+            return (
+                <div 
+                    className={`
+                        bg-(--background) shadow-(--shadow)
+                        rounded-2xl
+                        ${className}
+                    `}
+                >
+                    {children}
+                </div>
+            );
+        }
+
+        function CalculatorDisplay({ operation, result }) {
+            return (
+                <div 
+                    className={`
+                        flex flex-col gap-2 px-[1.375rem]
+                        cursor-default
+                        select-none
+                    `}
+                >
+                    <Text 
+                        as="div" 
+                        variant="muted"
+                        className="flex items-center justify-end">
+                        {operation}
+                    </Text>
+                    <div
+                    className={`
+                        flex items-center justify-between
+                        `}
+                        >
+                        <Text variant="muted">=</Text>
+                        <Text variant="blast">{result}</Text>
+                    </div>
+                </div>
+            );
+        }
+
+        function Calculator() {
+            return (
+                <Card 
+                    className={`
+                        flex flex-col gap-[1.625rem] w-[22.25rem]
+                        pt-14 px-8 pb-8
+                    `}
+                >
+                    <CalculatorDisplay operation="1 + 1" result="2" />
+
+                    <div className="flex flex-col gap-3">
+                        <div className="flex gap-3">
+                            <Button className="w-16 h-16">CE</Button>
+                            <Button className="flex-1 h-16">C</Button>
+                            <Button className="w-16 h-16" variant="primary">/</Button>
+                        </div>
+                        <div className="flex gap-3">
+                            <Button className="w-16 h-16">7</Button>
+                            <Button className="w-16 h-16">8</Button>
+                            <Button className="w-16 h-16">9</Button>
+                            <Button className="w-16 h-16" variant="primary">X</Button>
+                        </div>
+                        <div className="flex gap-3">
+                            <Button className="w-16 h-16">4</Button>
+                            <Button className="w-16 h-16">5</Button>
+                            <Button className="w-16 h-16">6</Button>
+                            <Button className="w-16 h-16" variant="primary">-</Button>
+                        </div>
+                        <div className="flex gap-3">
+                            <Button className="w-16 h-16">1</Button>
+                            <Button className="w-16 h-16">2</Button>
+                            <Button className="w-16 h-16">3</Button>
+                            <Button className="w-16 h-16" variant="primary">+</Button>
+                        </div>
+                        <div className="flex gap-3">
+                            <Button className="flex-1 h-16">0</Button>
+                            <Button className="w-16 h-16">,</Button>
+                            <Button className="w-16 h-16" variant="primary">=</Button>
+                        </div>
+                    </div>
+                </Card>
+            )
+        }
+
+        function OperationHistory(){
+            return (
+                <Card className="w-full py-10 px-9">
+                    <Text
+                        as="h1"
+                        variant="heading"
+                        className="mb-4"
+                    >
+                        Histórico de Operações
+                    </Text>
+                    <ul className="flex flex-col gap-3">
+                        <Text as="li">1 + 1 = 2</Text>
+                        <Text as="li">2 + 3 + 1 = 6</Text>
+                        <Text as="li">2 + 3 = 5</Text>
+                    </ul>
+                </Card>
+            );
+        }
+
+        function App() {
+            return(
+                <main className={`
+                    py-28 px-4 sm:px-10
+                    flex flex-col sm:flex-row
+                    items-center sm:items-stretch
+                    gap-2
+                `}>
+                    <Calculator/>
+                    <OperationHistory/>
+                </main>
+            );
+        }
+
+        ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+    </script>
+
+</body>
+</html>
