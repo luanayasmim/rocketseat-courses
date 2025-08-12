@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rockeatseat - React.js - Fundamentos</title>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <script type="text/babel">
+        const CounterContext = React.createContext();
+
+        function CounterProvider({ children }) {
+            const [savedCounts, setSavedCounts] = React.useState([]);
+
+            function saveCounts(count) {
+                setSavedCounts((prev) => [...prev, count]);
+            }
+
+            return (
+                <CounterContext.Provider
+                    value={{ savedCounts, saveCounts }}
+                >
+                    {children}
+                </CounterContext.Provider>
+            );
+        }
+
+        function Counter() {
+            const [counter, setCounter] = React.useState(0);
+            const { savedCountssaveCounts } = React.useContext(CounterContext);
+
+            return (
+                <>
+                   <p>Contador: {counter} - Último valor salvo: {savedCounts.length-1 || ''}</p> 
+                   <button onClick={() => setCounter(10)}>Atualizar</button>
+                   <button onClick={() => setCounter((prevValue) => prevValue + 1)}>Incrementar</button>
+                   <button onClick={() => setCounter((prevValue) => prevValue - 1)}>Decrementar</button>
+                   <button onClick={() => saveCounts(counter)}>Salvar</button>
+                </>
+            );
+        }
+
+        function CounterList() {
+            const { savedCounts } = React.useContext(CounterContext);
+            return (
+                <div>
+                    <h2>Valores salvos</h2>
+                    <ul>
+                        {savedCounts.map((count, index) => (
+                            <li key={`item-${index}`}>{count}</li>
+
+                        ))}
+                    </ul>
+                </div>
+            );
+        }
+
+        function App() {
+            return (
+                <main>
+                    <CounterProvider>
+                        <Counter/>
+                        <hr/>
+                        <CounterList/>
+                    </CounterProvider>
+                </main>
+            );
+        }
+
+        ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+    </script>
+
+</body>
+</html>

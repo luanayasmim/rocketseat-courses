@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rockeatseat - React.js - Fundamentos</title>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <script type="text/babel">
+
+        function ListNames(){
+            const [names] = React.useState(["Ana", "Aline", "Bruno", "Carlos", "Daniel", "Eduardo", "Fernanda", "Gustavo"]);
+            const [search, setSearch] = React.useState("");
+
+            return (
+                
+                <ul>
+                    <input 
+                        type="text"
+                        placeholder="buscar por nome"
+                        value={search}
+                        onChange={event => setSearch(event.target.value)}
+                    />
+                    {names
+                        .filter((name) => name.toLowerCase().includes(search.toLowerCase()))
+                        .map((name, index) => <li key={`${index}-${name}`}>{name}</li>
+                    )}
+                </ul>
+            );
+        }
+
+        function App() {
+            return (
+                <main className="p-3">
+                    <ListNames/>
+                </main>
+            );
+        }
+
+        ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+    </script>
+
+</body>
+</html>

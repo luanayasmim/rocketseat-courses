@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rockeatseat - React.js - Fundamentos</title>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <script type="text/babel">
+        function Counter() {
+            const [counter, setCounter] = React.useState(0);
+            const [name, setName] = React.useState('');
+
+            React.useEffect(()=>{
+                console.log('Componente montado!');
+
+                return () => {
+                    console.log('Componente desmontado!');
+                };
+            }, []);
+
+
+            React.useEffect(() => {
+                if (counter > 0)
+                    console.log(`Componente atualizado ${counter}`);
+            }, [counter]);
+
+            React.useEffect(() => {
+                console.log('Contador ou nome atualizados');
+            }, [counter, name]);
+
+            return (
+                <>
+                    <div>
+                        <label for="">Nome:</label>
+                        <input onChange={(event) => setName(event.target.value)} type="text" />
+                    </div>
+
+                   <p>Contador: {counter}</p> 
+                   <button onClick={() => setCounter(10)}>Atualizar</button>
+                   <button onClick={() => setCounter((prevValue) => prevValue + 1)}>Incrementar</button>
+                   <button onClick={() => setCounter((prevValue) => prevValue - 1)}>Decrementar</button>
+                </>
+            );
+        }
+
+        function App() {
+            const [show, setShow] = React.useState(true);
+
+            return (
+                <main>
+                    <button onClick={()=>setShow(!show)}>Mostrar/Ocultar contador</button>
+                    <hr/>
+                    {show && <Counter/>}
+                </main>
+            );
+        }
+
+        ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+    </script>
+
+</body>
+</html>

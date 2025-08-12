@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rockeatseat - React.js - Fundamentos</title>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <script type="text/babel">
+
+        function Alert1() {
+            function handleAlertClick(event) {
+                console.log(event);
+                alert('Uma mensagem de alerta!');
+            }
+
+            return (
+                <button onClick={handleAlertClick}>Mostrar Alerta</button>
+            );
+        }
+
+        function Alert2() {
+            function handleAlertClick(msg) {
+                alert(msg);
+            }
+
+            return (
+                <button onClick={()=>handleAlertClick('Uma mensagem de alerta!')}>Mostrar Alerta com Parâmetro</button>
+            );
+        }
+
+        function Alert3() {
+            function handleAlertClick(event) {
+                alert(event.target.previousSibling.value);
+            }
+
+            return (
+                <div>
+                    <input type="text" placeholder="Digite algo..."/>
+                    <button onClick={handleAlertClick}>Mostrar Alerta do Campo de Texto</button>
+                </div>
+            );
+        }
+
+        function Alert4() {
+            function handleAlertClick(event) {
+                alert(event.target.previousSibling.value);
+            }
+
+            
+            function handleInputChange(event){
+                console.log(event.target.value);
+            }
+
+            return (
+                <div>
+                    <input type="text" placeholder="Digite algo..." onChange={handleInputChange}/>
+                    <button onClick={handleAlertClick}>Mostrar Alerta do Campo de Texto</button>
+                </div>
+            );
+        }
+
+        function App() {
+            return (
+                <main>
+                    <Alert1/>
+                    <Alert2/>
+                    <Alert3/>
+                    <Alert4/>
+                </main>
+            );
+        }
+
+        ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+    </script>
+
+</body>
+</html>
