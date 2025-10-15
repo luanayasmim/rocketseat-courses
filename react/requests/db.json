@@ -1,0 +1,32 @@
+{
+  "users": [
+    {
+      "id": "lua",
+      "name": "Luana"
+    },
+    {
+      "id": "yas",
+      "name": "Yasmim"
+    },
+    {
+      "id": "fer",
+      "name": "Fernanda"
+    },
+    {
+      "id": "lui",
+      "name": "Luis"
+    },
+    {
+      "id": "ali",
+      "name": "Aline"
+    },
+    {
+      "id": "per",
+      "name": "Pedro"
+    },
+    {
+      "id": "tes",
+      "name": "Teste"
+    }
+  ]
+}
