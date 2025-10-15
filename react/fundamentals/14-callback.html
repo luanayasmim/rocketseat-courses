@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rockeatseat - React.js - Fundamentos</title>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <script type="text/babel">
+        function App() {
+            const [is12Hours, setIs12Hours] = React.useState(false);
+            const [time, setTime] = React.useState('');
+
+            const updateTime = React.useCallback(() => {
+                const now = new Date(Date.now());
+                const formmatedTime = now.toLocaleTimeString('pt-BR', {
+                    hour:"2-digit",
+                    minute:"2-digit",
+                    second:"2-digit",
+                    hour12: is12Hours
+                });
+
+                setTime(formmatedTime);
+            }, [is12Hours]);
+
+            React.useEffect(()=>{
+                updateTime();
+
+                const timer = setInterval(()=>{
+                    updateTime();
+                }, 1000);
+
+                return () => clearInterval(timer);
+            }, [updateTime]);
+
+            return (
+                <main>
+                    <div>🕑{time}</div>
+                    <button onClick={()=>setIs12Hours(!is12Hours)}>Alterar para formato {is12Hours ? '24h' : '12h'}</button>
+                </main>
+            );
+        }
+
+        ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+    </script>
+
+</body>
+</html>
