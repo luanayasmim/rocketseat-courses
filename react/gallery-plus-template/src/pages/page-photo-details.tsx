@@ -1,3 +1,4 @@
+import React from "react";
 import { useParams } from "react-router";
 import Container from "../components/container";
 import Text from "../components/text";
@@ -6,29 +7,26 @@ import PhotosNavigator from "../contexts/photos/components/photos-navigator";
 import ImagePreview from "../components/image-preview";
 import Button from "../components/button";
 import AlbumsListSelectable from "../contexts/albums/components/albums-list-selectable";
+import useAlbums from "../contexts/albums/hooks/use-albums";
+import usePhoto from "../contexts/photos/hooks/use-photo";
+import type { Photo } from "../contexts/photos/models/photo";
 
 export default function PagePhotoDetails() {
   const { id } = useParams();
-  const isLoadingPhoto = false;
-  const photo = {
-    id: "256718",
-    title: "photo example",
-    imageId: "portrait-tower.png",
-    albums: [
-      {
-        id: "83920",
-        title: "album 1",
-      },
-      {
-        id: "673728",
-        title: "album 2",
-      },
-      {
-        id: "9302",
-        title: "album 3",
-      },
-    ],
-  };
+  const { photo, previousPhotoId, nextPhotoId, isLoadingPhoto, deletePhoto } =
+    usePhoto(id);
+  const { albums, isLoadingAlbums } = useAlbums();
+  const [isDeletingPhoto, setIsDeletingPhoto] = React.useTransition();
+
+  function handleDeletePhoto() {
+    setIsDeletingPhoto(async () => {
+      await deletePhoto(photo!.id);
+    });
+  }
+
+  if (!isLoadingPhoto && !photo) {
+    return <div>Foto não encontrada :(</div>;
+  }
 
   return (
     <Container>
@@ -41,13 +39,17 @@ export default function PagePhotoDetails() {
           <Skeleton className="w-48 h-8" />
         )}
 
-        <PhotosNavigator loading={isLoadingPhoto} />
+        <PhotosNavigator
+          previousPhotoId={previousPhotoId}
+          nextPhotoId={nextPhotoId}
+          loading={isLoadingPhoto}
+        />
       </header>
       <div className="grid grid-cols-[21rem_1fr] gap-24">
         <div className="space-y-3">
           {!isLoadingPhoto ? (
             <ImagePreview
-              src={`/images/${photo?.imageId}`}
+              src={`${import.meta.env.VITE_IMAGES_URL}/${photo?.imageId}`}
               alt={photo?.title}
               title={photo?.title}
               imageClassName="h-[21rem]"
@@ -56,7 +58,14 @@ export default function PagePhotoDetails() {
             <Skeleton className="h-[21rem]" />
           )}
           {!isLoadingPhoto ? (
-            <Button variant="destructive">Excluir</Button>
+            <Button
+              variant="destructive"
+              onClick={handleDeletePhoto}
+              disabled={isDeletingPhoto}
+              handling={isDeletingPhoto}
+            >
+              {isDeletingPhoto ? "Excluindo ..." : "Excluir"}
+            </Button>
           ) : (
             <Skeleton className="w-20 h-10" />
           )}
@@ -67,22 +76,9 @@ export default function PagePhotoDetails() {
           </Text>
 
           <AlbumsListSelectable
-            loading={isLoadingPhoto}
-            photo={photo}
-            albums={[
-              {
-                id: "83920",
-                title: "album 1",
-              },
-              {
-                id: "673728",
-                title: "album 2",
-              },
-              {
-                id: "9302",
-                title: "album 3",
-              },
-            ]}
+            photo={photo as Photo}
+            albums={albums}
+            loading={isLoadingAlbums}
           />
         </div>
       </div>
