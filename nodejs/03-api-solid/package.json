@@ -1,0 +1,48 @@
+{
+  "name": "03-api-solid",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start:dev": "tsx watch src/server.ts",
+    "start": "node build/server.js",
+    "build": "tsup src --out-dir build",
+    "test": "vitest run --project unit",
+    "test:e2e": "vitest run --project e2e",
+    "test:watch": "vitest --project unit",
+    "test:e2e:watch": "vitest --project e2e",
+    "test:coverage": "vitest run --coverage",
+    "test:ui": "vitest --ui"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "@fastify/cookie": "11.0.2",
+    "@fastify/jwt": "10.0.0",
+    "@prisma/client": "7.1.0",
+    "@types/bcryptjs": "2.4.6",
+    "bcryptjs": "3.0.3",
+    "dayjs": "1.11.19",
+    "dotenv": "17.2.3",
+    "fastify": "^5.6.2",
+    "zod": "4.2.1"
+  },
+  "devDependencies": {
+    "@rocketseat/eslint-config": "2.2.2",
+    "@types/node": "^25.0.3",
+    "@types/supertest": "6.0.3",
+    "@vitest/coverage-v8": "4.0.16",
+    "@vitest/ui": "4.0.16",
+    "eslint": "8.57.1",
+    "prisma": "7.1.0",
+    "supertest": "7.1.4",
+    "tsup": "^8.5.1",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3",
+    "vite": "7.3.0",
+    "vite-tsconfig-paths": "6.0.3",
+    "vitest": "4.0.16"
+  }
+}
